@@ -4,7 +4,6 @@ from rembg import remove
 from PIL import Image
 import io
 
-
 app = FastAPI()
 
 @app.get("/health")
