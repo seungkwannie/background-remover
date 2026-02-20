@@ -1,28 +1,38 @@
-from fastapi import FastAPI, UploadFile, File
-from fastapi.responses import StreamingResponse  # <--- Add this import
-from rembg import remove
-from PIL import Image
-import io
+import requests, os
+from io import BytesIO
+from fastapi import FastAPI, UploadFile, File, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import StreamingResponse
 
 app = FastAPI()
 
-@app.get("/health")
-def health():
-    return {"status": "ok"}
+# This pulls the key from Render's settings
+REMOVE_BG_API_KEY = os.getenv("remove-background")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origin_regex='.*',
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 @app.post("/remove-bg")
-async def remove_bg(file: UploadFile = File(...)):
-    # 1. Read and open the image
-    image_bytes = await file.read()
-    image = Image.open(io.BytesIO(image_bytes))
+async def remove_background(file: UploadFile = File(...)):
+    if not REMOVE_BG_API_KEY:
+        raise HTTPException(status_code=500, detail="API Key not configured on server")
 
-    # 2. Process the image
-    output = remove(image)
+    input_data = await file.read()
 
-    # 3. Save to a byte buffer
-    buffer = io.BytesIO()
-    output.save(buffer, format="PNG")
-    buffer.seek(0)
+    response = requests.post(
+        'https://api.remove.bg/v1.0/removebg',
+        files={'image_file': input_data},
+        data={'size': 'auto'},
+        headers={'X-Api-Key': REMOVE_BG_API_KEY},
+    )
 
-    # 4. Return as a proper Image Stream
-    return StreamingResponse(buffer, media_type="image/png")
+    if response.status_code == requests.codes.ok:
+        return StreamingResponse(BytesIO(response.content), media_type="image/png")
+    else:
+        raise HTTPException(status_code=response.status_code, detail=response.text)

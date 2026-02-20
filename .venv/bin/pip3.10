@@ -1,4 +1,4 @@
-#!/Users/myreguiang/PycharmProjects/PythonProject1/background-remover/.venv/bin/python3
+#!/Users/myreguiang/PycharmProjects/PythonProject1/background-remover/.venv/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys
