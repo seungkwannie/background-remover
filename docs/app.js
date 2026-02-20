@@ -34,5 +34,3 @@ removeBtn.addEventListener("click", async () => {
         alert("Check the Render logs—the backend might be having a problem!");
     }
 });
-
-# http://localhost:8000/remove-bg
