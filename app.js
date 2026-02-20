@@ -25,3 +25,5 @@ removeBtn.addEventListener("click", async () => {
   downloadLink.href = imageUrl;
   downloadLink.style.display = "inline";
 });
+
+# http://localhost:8000/remove-bg
