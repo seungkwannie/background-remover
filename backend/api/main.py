@@ -7,7 +7,7 @@ from fastapi.responses import StreamingResponse
 app = FastAPI()
 
 # This pulls the key from Render's settings
-REMOVE_BG_API_KEY = os.getenv("remove-background")
+REMOVE_BG_API_KEY = os.getenv("bg-remover")
 
 app.add_middleware(
     CORSMiddleware,
