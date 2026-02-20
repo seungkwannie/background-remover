@@ -6,12 +6,11 @@ from fastapi.responses import StreamingResponse
 
 app = FastAPI()
 
-# This pulls the key from Render's settings
-REMOVE_BG_API_KEY = os.getenv("bg-remover")
+REMOVE_BG_API_KEY = os.getenv("V14Srv7wBExGeEUFBzdCSTEf")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origin_regex='.*',
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -21,10 +20,10 @@ API_TOKEN = os.getenv("V14Srv7wBExGeEUFBzdCSTEf")
 
 @app.get("/")
 async def root():
-    if API_TOKEN:
-        return {"status": "success", "message": "Token is loaded from Render!"}
+    if REMOVE_BG_API_KEY:
+        return {"status": "success", "message": "Render environment variables are loaded!"}
     else:
-        return {"status": "error", "message": "Token not found in environment variables"}
+        return {"status": "error", "message": "Keys not found. Check Render Environment tab."}
 
 @app.post("/remove-bg")
 async def remove_background(file: UploadFile = File(...)):
