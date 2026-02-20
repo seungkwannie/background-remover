@@ -17,6 +17,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+API_TOKEN = os.getenv("V14Srv7wBExGeEUFBzdCSTEf")
+
+@app.get("/")
+async def root():
+    if API_TOKEN:
+        return {"status": "success", "message": "Token is loaded from Render!"}
+    else:
+        return {"status": "error", "message": "Token not found in environment variables"}
 
 @app.post("/remove-bg")
 async def remove_background(file: UploadFile = File(...)):
