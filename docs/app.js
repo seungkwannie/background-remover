@@ -13,7 +13,7 @@ removeBtn.addEventListener("click", async () => {
   const formData = new FormData();
   formData.append("file", file);
 
-  const response = await fetch("https://background-remover-hcj4.onrender.com/remove-bg", {
+  const response = await fetch("https://background-remover-hcj4.onrender.com/bg-remover", {
     method: "POST",
     body: formData,
   });
