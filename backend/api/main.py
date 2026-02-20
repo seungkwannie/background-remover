@@ -6,7 +6,8 @@ from fastapi.responses import StreamingResponse
 
 app = FastAPI()
 
-REMOVE_BG_API_KEY = os.getenv("V14Srv7wBExGeEUFBzdCSTEf")
+REMOVE_BG_API_KEY = os.getenv("REMOVE_BG_API_KEY")
+API_TOKEN = os.getenv("MY_APP_TOKEN")
 
 app.add_middleware(
     CORSMiddleware,
@@ -15,8 +16,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-API_TOKEN = os.getenv("V14Srv7wBExGeEUFBzdCSTEf")
 
 @app.get("/")
 async def root():
